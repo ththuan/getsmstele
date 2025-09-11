@@ -1,0 +1,4 @@
+telethon
+eth_account
+requests
+python-dotenv
