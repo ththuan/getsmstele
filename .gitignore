@@ -43,3 +43,12 @@ Thumbs.db
 # Logs
 *.log
 logs/
+
+# Success files
+success.txt
+
+# Private keys files
+private_keys_*.txt
+
+# Other repos
+getsmstele/

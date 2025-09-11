@@ -18,16 +18,33 @@ from eth_account import Account
 # Disable SSL warnings
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
+def load_env_file():
+    """Load .env file manually"""
+    env_vars = {}
+    try:
+        with open('.env', 'r', encoding='utf-8') as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith('#') and '=' in line:
+                    key, value = line.split('=', 1)
+                    env_vars[key.strip()] = value.strip()
+    except FileNotFoundError:
+        print("⚠️ .env file not found, using default values")
+    return env_vars
+
 class SoDEXAutoBot:
     def __init__(self):
-        # Hardcoded config
-        self.api_id = "21208198"
-        self.api_hash = "788973d196fc50bc1653732c1b9a6089"  
-        self.phone = "+84944300848"
-        self.group_id = int("1002509849601")
+        # Load environment variables
+        env_vars = load_env_file()
+        
+        # Load config from .env
+        self.api_id = env_vars.get("TELEGRAM_API_ID", "21208198")
+        self.api_hash = env_vars.get("TELEGRAM_API_HASH", "788973d196fc50bc1653732c1b9a6089")
+        self.phone = env_vars.get("TELEGRAM_PHONE", "+84944300848")
+        self.group_id = int(env_vars.get("TELEGRAM_GROUP_ID", "1002509849601"))
         
         # API settings
-        self.url = "https://test-vex-v1.sodex.dev/biz/task/referral/join"
+        self.url = env_vars.get("SODEX_API_URL", "https://test-vex-v1.sodex.dev/biz/task/referral/join")
         self.headers = {
             'Content-Type': 'application/json',
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
@@ -171,38 +188,60 @@ class SoDEXAutoBot:
         """Start Telegram monitoring"""
         client = TelegramClient('sodex_session', self.api_id, self.api_hash)
         
-        @client.on(events.NewMessage(chats=self.group_id))
-        async def handle_message(event):
-            message = event.message.message
-            sender = await event.get_sender()
-            timestamp = datetime.now().strftime("%H:%M:%S")
+        try:
+            print("📱 Connecting to Telegram...")
+            await client.start(phone=self.phone)
+            print("✅ Telegram connected successfully!")
             
-            # Log all messages for debugging
-            print(f"[{timestamp}] 📨 Message from {sender.first_name}: {message[:50]}...")
+            # Get group info
+            try:
+                entity = await client.get_entity(self.group_id)
+                print(f"📢 Monitoring group: {entity.title}")
+            except Exception as e:
+                print(f"⚠️ Could not get group info: {e}")
             
-            words = message.split()
-            
-            for word in words:
-                if self.is_valid_code(word):
-                    print(f"[{timestamp}] 🎯 FOUND VALID CODE: {word}")
-                    print(f"👤 From: {sender.first_name} (@{sender.username})")
+            @client.on(events.NewMessage(chats=self.group_id))
+            async def handle_message(event):
+                try:
+                    message = event.message.message
+                    if not message:
+                        return
+                        
+                    sender = await event.get_sender()
+                    timestamp = datetime.now().strftime("%H:%M:%S")
                     
-                    # Show available wallets count before processing
-                    print(f"💰 Available wallets: {len(self.wallets)}")
+                    # Log all messages for debugging
+                    sender_name = getattr(sender, 'first_name', 'Unknown')
+                    print(f"[{timestamp}] 📨 Message from {sender_name}: {message[:50]}...")
                     
-                    # Verify immediately in background
-                    threading.Thread(
-                        target=self.verify_code, 
-                        args=(word,), 
-                        daemon=True
-                    ).start()
-        
-        print("📱 Connecting to Telegram...")
-        await client.start(phone=self.phone)
-        print("✅ Telegram connected! Monitoring for codes...")
-        
-        # Keep running
-        await client.run_until_disconnected()
+                    words = message.split()
+                    
+                    for word in words:
+                        if self.is_valid_code(word):
+                            print(f"[{timestamp}] 🎯 FOUND VALID CODE: {word}")
+                            print(f"👤 From: {sender_name} (@{getattr(sender, 'username', 'no_username')})")
+                            
+                            # Show available wallets count before processing
+                            print(f"💰 Available wallets: {len(self.wallets)}")
+                            
+                            # Verify immediately in background
+                            threading.Thread(
+                                target=self.verify_code, 
+                                args=(word,), 
+                                daemon=True
+                            ).start()
+                except Exception as e:
+                    print(f"❌ Error handling message: {e}")
+            
+            print("🔍 Monitoring started! Waiting for referral codes...")
+            
+            # Keep running
+            await client.run_until_disconnected()
+            
+        except Exception as e:
+            print(f"❌ Telegram connection error: {e}")
+            print("💡 Please check your Telegram API credentials in .env file")
+            raise
     
     def show_status(self):
         """Show periodic status every 5 seconds"""
