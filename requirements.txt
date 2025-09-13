@@ -1,0 +1,4 @@
+requests==2.31.0
+eth-account==0.9.0
+web3==6.11.0
+telethon==1.36.0
