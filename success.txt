@@ -1,0 +1,1 @@
+05:09:03 | 3DCL58JW | 0x6d69ccA8f6326e9c96140dBE9aB48459bc463467 | {"code": 0, "msg": "successfully joined referral program", "data": {"inviterWallet": "0x89A55188fB78cA2221874CAc30bD1051afCE7E1f", "referralCode": "3DCL58JW"}}
