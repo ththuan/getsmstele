@@ -1,1 +1,9 @@
-05:09:03 | 3DCL58JW | 0x6d69ccA8f6326e9c96140dBE9aB48459bc463467 | {"code": 0, "msg": "successfully joined referral program", "data": {"inviterWallet": "0x89A55188fB78cA2221874CAc30bD1051afCE7E1f", "referralCode": "3DCL58JW"}}
+13:35:53 | O7JNM0MG | 0x64b1A906C06B13EaB77421028e5e3dB42CC0F010 | {"code": 0, "msg": "successfully joined referral program", "data": {"inviterWallet": "0x9698FbE0A70e83CF6317735FB36e44a111F02909", "referralCode": "O7JNM0MG"}}
+21:15:59 | BKWS7GW1 | 0x64b1A906C06B13EaB77421028e5e3dB42CC0F010 | {"code": 1, "msg": "user already in whitelist", "data": null}
+21:50:13 | SHOKZUZX | 0x46ba9372798F78FC58e631793CA8313feBF1266f | {"code": 0, "msg": "successfully joined referral program", "data": {"inviterWallet": "0x8594173Fae2a130d3AC42d5760039553588f552F", "referralCode": "SHOKZUZX"}}
+22:05:24 | W58XIGMC | 0x4cde51a0676302F54aaeF057C4Ff6121B2f7C3Bf | {"code": 1, "msg": "failed to process referral: failed to create whitelist record: Error 1062 (23000): Duplicate entry '0x4cde51a0676302F54aaeF057C4Ff6121B2f7C3Bf-' for key 'whitelist_records.idx_address'", "data": null}
+22:05:24 | H5XPCBPU | 0x4cde51a0676302F54aaeF057C4Ff6121B2f7C3Bf | {"code": 1, "msg": "user already in whitelist", "data": null}
+22:05:24 | 8YCHEZTU | 0x4cde51a0676302F54aaeF057C4Ff6121B2f7C3Bf | {"code": 0, "msg": "successfully joined referral program", "data": {"inviterWallet": "0x4B1E3f942B607F07F00007DE1D941fa0fc2920b9", "referralCode": "8YCHEZTU"}}
+22:05:24 | 4SEAYDXS | 0x29C59C6bf0a0b78F2Df394ea2995027d417cD5be | {"code": 0, "msg": "successfully joined referral program", "data": {"inviterWallet": "0x4B1E3f942B607F07F00007DE1D941fa0fc2920b9", "referralCode": "4SEAYDXS"}}
+04:27:11 | PREBFN9U | 0x49d6De62478FACF7E6F4eF06eD58840b5CA24887 | {"code": 0, "msg": "successfully joined referral program", "data": {"inviterWallet": "0xC3305EAC8Ef4b9f42624351f661D14e7aEd1E226", "referralCode": "PREBFN9U"}}
+04:47:11 | RRKNUPPW | 0xd2F8C51DaAC81DBCC01bBA4006fd50CE1947B70d | {"code": 0, "msg": "successfully joined referral program", "data": {"inviterWallet": "0x0700F4f9c2982d2143F64792f81E75181eECe1F6", "referralCode": "RRKNUPPW"}}
